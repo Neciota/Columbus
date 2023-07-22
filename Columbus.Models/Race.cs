@@ -38,9 +38,6 @@ namespace Columbus.Models
 
         public void CalculateResults()
         {
-            foreach (OwnerRace ownerRace in OwnerRaces)
-                ownerRace.Count = PigeonRaces.Where(pr => pr.Pigeon.Owner.ID == ownerRace.Owner.ID).Count();
-
             RankPigeons();
             AssignNextPigeon();
         }
@@ -64,10 +61,13 @@ namespace Columbus.Models
 
         private void AssignNextPigeon()
         {
-            List<PigeonRace> pigeonRaces = PigeonRaces.ToList();
-            for (int i = 0; i < pigeonRaces.Count; i++)
+            foreach (OwnerRace ownerRace in OwnerRaces)
             {
-                pigeonRaces.ElementAt(i).Next = pigeonRaces.FindIndex(i + 1, pr => pr.Pigeon.Owner.ID == pigeonRaces[i].Pigeon.Owner.ID) + 1;
+                List<PigeonRace> ownerPigeonRaces = PigeonRaces.Where(pr => ownerRace.Owner.Pigeons.Contains(pr.Pigeon)).ToList();
+                for (int i = 0; i < ownerPigeonRaces.Count - 1; i++)
+                {
+                    ownerPigeonRaces[i].Next = ownerPigeonRaces[i + 1].Position;
+                }
             }
         }
 

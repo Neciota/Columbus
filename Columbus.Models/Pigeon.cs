@@ -8,12 +8,11 @@
         /// <summary>
         /// Create an <c>Pigeon</c> from ownership data.
         /// </summary>
-        public Pigeon(string country, int year, int ringNumber, Owner owner, int chip, Sex sex)
+        public Pigeon(string country, int year, int ringNumber, int chip, Sex sex)
         {
             Country = country;
             Year = year;
             RingNumber = ringNumber;
-            Owner = owner;
             Chip = chip;
             Sex = sex;
         }
@@ -24,10 +23,13 @@
 
         public int RingNumber { get; private set; }
 
-        public Owner Owner { get; set; }
-
         public int Chip { get; set; }
 
         public Sex Sex { get; private set; }
+
+        public override string ToString()
+        {
+            return $"{Country}{Year}-{RingNumber}";
+        }
     }
 }

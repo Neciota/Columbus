@@ -14,10 +14,11 @@
             Name = name;
             Coordinate = coordinate;
             Club = club;
+            Pigeons = new List<Pigeon>();
         }
 
         /// <summary>
-        /// Represent the 8-digt NPO-given ID, including club ID.
+        /// Represents the 8-digt NPO-given ID, including club ID.
         /// </summary>
         public int ID { get; private set; }
 
@@ -27,14 +28,19 @@
         public string Name { get; private set; }
 
         /// <summary>
-        /// Represent the coordinate of the loft.
+        /// Represents the coordinate of the loft.
         /// </summary>
         public Coordinate? Coordinate { get; private set; }
 
         /// <summary>
-        /// Represent the 4-digit club ID.
+        /// Represents the 4-digit club ID.
         /// </summary>
         public int Club { get; private set; }
+
+        /// <summary>
+        /// Represents the pigeons owned by this owner.
+        /// </summary>
+        public IEnumerable<Pigeon> Pigeons { get; set; }
 
         public override string ToString()
         {

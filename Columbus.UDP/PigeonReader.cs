@@ -36,7 +36,9 @@ namespace Columbus.UDP
 
                 Sex sex = GetPigeonSex(_allLines[i].Substring(15, 1));
 
-                pigeons.Add(new Pigeon(country, year, ringNumber, owner, chip, sex));
+                Pigeon pigeon = new Pigeon(country, year, ringNumber, chip, sex);
+                pigeons.Add(pigeon);
+                owner.Pigeons = owner.Pigeons.Append(pigeon);
             }
 
             return pigeons;

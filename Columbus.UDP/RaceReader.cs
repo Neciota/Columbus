@@ -125,7 +125,7 @@ namespace Columbus.UDP
 
         private List<OwnerRace> GetOwnerRaces(IEnumerable<Owner> owners)
         {
-            return owners.Select(o => new OwnerRace(o, RaceCoordinate!, PigeonRaces!.Where(pr => pr.Pigeon.Owner.ID == o.ID).Count(), PigeonRaces!.Where(pr => pr.Pigeon.Owner.ID == o.ID).Sum(pr => pr.Points ?? 0)))
+            return owners.Select(o => new OwnerRace(o, RaceCoordinate!, PigeonRaces!.Count(pr => o.Pigeons.Contains(pr.Pigeon)), PigeonRaces!.Where(pr => o.Pigeons.Contains(pr.Pigeon)).Sum(pr => pr.Points ?? 0)))
                 .ToList();
         }
 

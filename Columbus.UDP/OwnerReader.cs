@@ -3,11 +3,11 @@ using Columbus.UDP.Interfaces;
 
 namespace Columbus.UDP
 {
-    public class OwnerReader : IOwnerReader
+    public class OwnerReader : PigeonReader, IOwnerReader
     {
         private readonly string[] _allLines;
 
-        public OwnerReader(string[] udp)
+        public OwnerReader(string[] udp): base(udp)
         {
             _allLines = udp;
         }
@@ -34,6 +34,8 @@ namespace Columbus.UDP
                 Owner owner = new Owner(id, name, coordinate, club);
                 owners.Add(owner);
             }
+
+            GetPigeons(owners);
 
             return owners;
         }

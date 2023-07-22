@@ -2,7 +2,7 @@
 
 namespace Columbus.UDP.Interfaces
 {
-    public interface IOwnerReader
+    public interface IOwnerReader : IPigeonReader
     {
         IEnumerable<Owner> GetOwners();
     }
