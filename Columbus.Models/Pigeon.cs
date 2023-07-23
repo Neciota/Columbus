@@ -31,5 +31,40 @@
         {
             return $"{Country}{Year}-{RingNumber}";
         }
+
+        public override int GetHashCode()
+        {
+            HashCode hash = new HashCode();
+            hash.Add(Country);
+            hash.Add(Year);
+            hash.Add(RingNumber);
+
+            return hash.ToHashCode();
+        }
+
+        public override bool Equals(object? obj)
+        {
+            return (obj?.GetHashCode() ?? 0) == this.GetHashCode();
+        }
+
+        public static bool operator ==(Pigeon? a, Pigeon? b)
+        {
+            if (a is null && b is null)
+                return true;
+            else if (a is null && b is not null)
+                return false;
+
+            return a!.Equals(b);
+        }
+
+        public static bool operator !=(Pigeon? a, Pigeon? b)
+        {
+            if (a is null && b is null)
+                return true;
+            else if (a is null && b is not null)
+                return false;
+
+            return !a!.Equals(b);
+        }
     }
 }

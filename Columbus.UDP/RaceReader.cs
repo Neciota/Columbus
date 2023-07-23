@@ -28,9 +28,9 @@ namespace Columbus.UDP
 
         private IEnumerable<Owner>? Owners { get; set; }
 
-        private IEnumerable<OwnerRace>? OwnerRaces { get; set; }
+        private IList<OwnerRace>? OwnerRaces { get; set; }
 
-        private IEnumerable<PigeonRace>? PigeonRaces { get; set; }
+        private IList<PigeonRace>? PigeonRaces { get; set; }
 
         public Race GetRace()
         {
@@ -92,7 +92,7 @@ namespace Columbus.UDP
             return new DateTime(year, month, day, hour, minute, second);
         }
 
-        private IEnumerable<PigeonRace> GetPigeonRaces(IEnumerable<Pigeon> pigeons)
+        private IList<PigeonRace> GetPigeonRaces(IEnumerable<Pigeon> pigeons)
         {
             List<PigeonRace> pigeonRaces = new List<PigeonRace>();
 
@@ -123,7 +123,7 @@ namespace Columbus.UDP
             return pigeonRaces;
         }
 
-        private List<OwnerRace> GetOwnerRaces(IEnumerable<Owner> owners)
+        private IList<OwnerRace> GetOwnerRaces(IEnumerable<Owner> owners)
         {
             return owners.Select(o => new OwnerRace(o, RaceCoordinate!, PigeonRaces!.Count(pr => o.Pigeons.Contains(pr.Pigeon)), PigeonRaces!.Where(pr => o.Pigeons.Contains(pr.Pigeon)).Sum(pr => pr.Points ?? 0)))
                 .ToList();

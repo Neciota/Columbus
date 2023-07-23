@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Columbus.Models
+﻿namespace Columbus.Models
 {
     public class Race
     {
-        public Race(string name, string code, DateTime startTime, Coordinate location, IEnumerable<OwnerRace> ownerRaces, IEnumerable<PigeonRace> pigeonRaces)
+        public Race(string name, string code, DateTime startTime, Coordinate location, IList<OwnerRace> ownerRaces, IList<PigeonRace> pigeonRaces)
         {
             Name = name;
             Code = code;
@@ -32,12 +26,18 @@ namespace Columbus.Models
 
         public Coordinate Location { get; set; }
 
-        public IEnumerable<OwnerRace> OwnerRaces { get; set; }
+        public IList<OwnerRace> OwnerRaces { get; set; }
 
-        public IEnumerable<PigeonRace> PigeonRaces { get; set; }
+        public IList<PigeonRace> PigeonRaces { get; set; }
 
         public void CalculateResults()
         {
+            foreach (OwnerRace ownerRace in OwnerRaces)
+            {
+                foreach (PigeonRace pigeonRace in PigeonRaces.Where(pr => ownerRace.Owner.Pigeons.Contains(pr.Pigeon)))
+                    pigeonRace.CalculateSpeed(ownerRace.Distance, StartTime);
+            }
+
             RankPigeons();
             AssignNextPigeon();
         }
@@ -46,16 +46,16 @@ namespace Columbus.Models
         {
             PigeonRaces = PigeonRaces.OrderByDescending(p => p.Speed).ToList();
 
-            double prizeCount = Math.Ceiling(Convert.ToDouble(PigeonRaces.Count()) / 3);
+            double prizeCount = Math.Ceiling(Convert.ToDouble(PigeonRaces.Count) / 3);
             double pointStep = 470.0 / Math.Max(prizeCount - 1, 1);
             for (int i = 0; i < prizeCount; i++)
             {
-                PigeonRaces.ElementAt(i).Points = Convert.ToInt32(Math.Round(500.0 - pointStep * i));
+                PigeonRaces[i].Points = Convert.ToInt32(Math.Round(500.0 - pointStep * i));
             }
 
-            for (int i = 0; i < PigeonRaces.Count(); i++)
+            for (int i = 0; i < PigeonRaces.Count; i++)
             {
-                PigeonRaces.ElementAt(i).Position = i + 1;
+                PigeonRaces[i].Position = i + 1;
             }
         }
 
