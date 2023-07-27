@@ -8,7 +8,7 @@
         E, // Dagfond
         O, // Marathon
         Z, // ZLU
-        J, // Jong
+        J, // Vitesse Jong
         X, // Natour Oud 1
         N, // Natour Oud 2
         F, // Fond Jong

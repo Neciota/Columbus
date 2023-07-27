@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace Columbus.Models
+﻿namespace Columbus.Models
 {
     /// <summary>
     /// Class <c>OwnerRace</c> models an owner's race participation.
@@ -21,7 +19,6 @@ namespace Columbus.Models
         /// <summary>
         /// Create an <c>OwnerRace</c> from Owner and properties.
         /// </summary>
-        [JsonConstructor]
         public OwnerRace(Owner owner, double distance, int count, int points)
         {
             Owner = owner;

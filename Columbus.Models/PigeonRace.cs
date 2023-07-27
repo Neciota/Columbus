@@ -9,6 +9,14 @@
             Mark = mark;
         }
 
+        public PigeonRace(Pigeon pigeon, DateTime arrivalTime, int mark, double? speed, int? points, int? position, int? next) : this(pigeon, arrivalTime, mark)
+        {
+            Speed = speed;
+            Points = points;
+            Position = position;
+            Next = next;
+        }
+
         public Pigeon Pigeon { get; set; }
 
         public DateTime ArrivalTime { get; set; }

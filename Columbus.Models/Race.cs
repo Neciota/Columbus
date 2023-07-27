@@ -14,6 +14,20 @@
             CalculateResults();
         }
 
+        public Race(int? number, RaceType type, string name, string code, DateTime startTime, Coordinate location, IList<OwnerRace> ownerRaces, IList<PigeonRace> pigeonRaces)
+        {
+            Number = number;
+            Type = type;
+            Name = name;
+            Code = code;
+            StartTime = startTime;
+            Location = location;
+            OwnerRaces = ownerRaces;
+            PigeonRaces = pigeonRaces;
+
+            CalculateResults();
+        }
+
         public int? Number { get; set; }
 
         public RaceType Type { get; set; }
