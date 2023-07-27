@@ -27,9 +27,11 @@ jobs:
       with:
         fetch-depth: 0 # Get all history to allow automatic versioning using MinVer
 
-    # Install the .NET SDK indicated in the global.json file
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
+    - name: Setup .NET Core SDK
+      uses: actions/setup-dotnet@v1
+      with:
+          dotnet-version: 7.x
+          include-prerelease: true
 
     # Create the NuGet package in the folder from the environment variable NuGetDirectory
     - run: dotnet pack --configuration Release --output ${{ env.NuGetDirectory }}
