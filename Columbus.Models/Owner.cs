@@ -18,6 +18,18 @@
         }
 
         /// <summary>
+        /// Create an <c>Owner</c> from NPO-given ID, name, loft coordinate, and club ID, and owned pigeons.
+        /// </summary>
+        public Owner(int id, string name, Coordinate? coordinate, int club, IEnumerable<Pigeon> pigeons)
+        {
+            ID = id;
+            Name = name;
+            Coordinate = coordinate;
+            Club = club;
+            Pigeons = pigeons;
+        }
+
+        /// <summary>
         /// Represents the 8-digt NPO-given ID, including club ID.
         /// </summary>
         public int ID { get; private set; }

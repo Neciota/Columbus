@@ -1,9 +1,26 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Title>Columbus Models</Title>
+    <Version>0.1.0</Version>
+    <Authors>Neciota</Authors>
+    <Description>Models to work with pigeon racing results.</Description>
+    <RepositoryUrl>https://github.com/TWC-Rik/Columbus/tree/main/Columbus.Models</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>pigeon;racing;race;.udp;.vdp;</PackageTags>
+    <PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>
