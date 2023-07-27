@@ -25,11 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Columbus.Models" Version="0.1.0" />
     <PackageReference Include="System.IO.Packaging" Version="6.0.0" />
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Columbus.Models\Columbus.Models.csproj" />
-  </ItemGroup>
-
 </Project>
