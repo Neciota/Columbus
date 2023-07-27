@@ -32,6 +32,9 @@ jobs:
       with:
           dotnet-version: 7.x
           include-prerelease: true
+          
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
 
     # Create the NuGet package in the folder from the environment variable NuGetDirectory
     - run: dotnet pack --configuration Release --output ${{ env.NuGetDirectory }}
