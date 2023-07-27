@@ -33,6 +33,9 @@ jobs:
           dotnet-version: 7.x
           include-prerelease: true
           
+    - name: Install dependencies
+      run: dotnet restore
+          
     - name: Build
       run: dotnet build --configuration Release --no-restore
 
