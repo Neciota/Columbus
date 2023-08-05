@@ -121,6 +121,7 @@ namespace Columbus.UDP
                 case "O": { return RaceType.O; }
                 case "Z": { return RaceType.Z; }
                 case "J": { return RaceType.J; }
+                case "L": { return RaceType.L; }
                 case "X": { return RaceType.X; }
                 case "N": { return RaceType.N; }
                 case "F": { return RaceType.F; }
