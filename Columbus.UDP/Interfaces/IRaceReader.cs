@@ -2,8 +2,8 @@
 
 namespace Columbus.UDP.Interfaces
 {
-    public interface IRaceReader : IOwnerReader, IPigeonReader
+    public interface IRaceReader
     {
-        Race GetRace();
+        Race GetRace(StreamReader stream);
     }
 }

@@ -4,6 +4,7 @@ namespace Columbus.UDP.Interfaces
 {
     public interface IPigeonReader
     {
-        IEnumerable<Pigeon> GetPigeons(IEnumerable<Owner> owners);
+        IEnumerable<Pigeon> GetPigeons(StreamReader stream);
+        Task<IEnumerable<Pigeon>> GetPigeonsAsync(StreamReader stream);
     }
 }
