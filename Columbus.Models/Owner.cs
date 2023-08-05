@@ -52,7 +52,7 @@
         /// <summary>
         /// Represents the pigeons owned by this owner.
         /// </summary>
-        public IEnumerable<Pigeon> Pigeons { get; set; }
+        public IList<Pigeon> Pigeons { get; set; }
 
         public override string ToString()
         {
