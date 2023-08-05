@@ -40,9 +40,9 @@ namespace Columbus.UDP
         {
             List<Pigeon> pigeons = new List<Pigeon>();
 
-            while (!stream.EndOfStream)
+            string line;
+            while ((line = (await stream.ReadLineAsync())!) is not null)
             {
-                string line = (await stream.ReadLineAsync())!;
                 string type = line.Substring(0, 2);
                 switch (type)
                 {
