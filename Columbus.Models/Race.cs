@@ -2,8 +2,10 @@
 {
     public class Race
     {
-        public Race(string name, string code, DateTime startTime, Coordinate location, IList<OwnerRace> ownerRaces, IList<PigeonRace> pigeonRaces)
+        public Race(int number, RaceType type, string name, string code, DateTime startTime, Coordinate location, IList<OwnerRace> ownerRaces, IList<PigeonRace> pigeonRaces)
         {
+            Number = number;
+            Type = type;
             Name = name;
             Code = code;
             StartTime = startTime;
@@ -14,9 +16,8 @@
             CalculateResults();
         }
 
-        public Race(int? number, RaceType type, string name, string code, DateTime startTime, Coordinate location, IList<OwnerRace> ownerRaces, IList<PigeonRace> pigeonRaces)
+        public Race(RaceType type, string name, string code, DateTime startTime, Coordinate location, IList<OwnerRace> ownerRaces, IList<PigeonRace> pigeonRaces)
         {
-            Number = number;
             Type = type;
             Name = name;
             Code = code;

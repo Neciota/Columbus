@@ -29,7 +29,12 @@
 
         public override string ToString()
         {
-            return $"{Country}{Year}-{RingNumber}";
+            return $"{Country}{GetTwoDigitYear()}-{RingNumber}";
+        }
+
+        public string GetTwoDigitYear()
+        {
+            return $"{Year - 2000}";
         }
 
         public override int GetHashCode()
