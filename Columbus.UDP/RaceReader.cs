@@ -85,7 +85,9 @@ namespace Columbus.UDP
 
             OwnerRaces = GetOwnerRaces(owners);
 
-            return new Race(RaceNumber, RaceType, RaceName!, RaceCode!, RaceStart!.Value, RaceCoordinate!, OwnerRaces!, PigeonRaces!);
+            Race race = new Race(RaceNumber, RaceType, RaceName!, RaceCode!, RaceStart!.Value, RaceCoordinate!, OwnerRaces!, PigeonRaces!);
+
+            return race;
         }
 
         private void GetRaceInfo(string line)
@@ -183,15 +185,28 @@ namespace Columbus.UDP
 
         private IList<OwnerRace> GetOwnerRaces(IEnumerable<Owner> owners)
         {
-            return owners.Select(GetOwnerRace).ToList();
-        }
+            List<OwnerRace> ownerRaces = new List<OwnerRace>();
 
-        private OwnerRace GetOwnerRace(Owner owner) => new OwnerRace(
-            owner,
-            RaceCoordinate!,
-            PigeonRaces!.Count(pr => owner.Pigeons.Contains(pr.Pigeon)),
-            PigeonRaces!.Where(pr => owner.Pigeons.Contains(pr.Pigeon)).Sum(pr => pr.Points ?? 0)
-        );
+            foreach (var owner in owners)
+            {
+                HashSet<Pigeon> pigeons = owner.Pigeons.ToHashSet();
+                int points = 0;
+                int count = 0;
+
+                foreach (PigeonRace pr in PigeonRaces!)
+                {
+                    if (!pigeons.Contains(pr.Pigeon))
+                        continue;
+
+                    points += pr.Points ?? 0;
+                    count++;
+                }
+
+                ownerRaces.Add(new OwnerRace(owner, RaceCoordinate!, count, points));
+            }
+
+            return ownerRaces;
+        }
 
         private static string HundredsOfYearsPrefix() => (DateTime.Today.Year / 100).ToString();
     }
