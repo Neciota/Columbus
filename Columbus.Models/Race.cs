@@ -49,7 +49,9 @@
         {
             foreach (OwnerRace ownerRace in OwnerRaces)
             {
-                foreach (PigeonRace pigeonRace in PigeonRaces.Where(pr => ownerRace.Owner.Pigeons.Contains(pr.Pigeon)))
+                HashSet<Pigeon> ownerPigeons = ownerRace.Owner.Pigeons.ToHashSet();
+
+                foreach (PigeonRace pigeonRace in PigeonRaces.Where(pr => ownerPigeons.Contains(pr.Pigeon)))
                     pigeonRace.CalculateSpeed(ownerRace.Distance, StartTime);
             }
 
@@ -78,7 +80,9 @@
         {
             foreach (OwnerRace ownerRace in OwnerRaces)
             {
-                List<PigeonRace> ownerPigeonRaces = PigeonRaces.Where(pr => ownerRace.Owner.Pigeons.Contains(pr.Pigeon)).ToList();
+                HashSet<Pigeon> ownerPigeons = ownerRace.Owner.Pigeons.ToHashSet();
+
+                List<PigeonRace> ownerPigeonRaces = PigeonRaces.Where(pr => ownerPigeons.Contains(pr.Pigeon)).ToList();
                 for (int i = 0; i < ownerPigeonRaces.Count - 1; i++)
                 {
                     ownerPigeonRaces[i].Next = ownerPigeonRaces[i + 1].Position;
