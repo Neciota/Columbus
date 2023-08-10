@@ -26,12 +26,15 @@ namespace Columbus.UDP
 
         private Coordinate? RaceCoordinate { get; set; }
 
+        private Dictionary<int, int>? OwnerClockDeviation { get; set; }
+
         private IList<OwnerRace>? OwnerRaces { get; set; }
 
         private IList<PigeonRace>? PigeonRaces { get; set; }
 
         public Race GetRace(StreamReader stream)
         {
+            OwnerClockDeviation = new Dictionary<int, int>();
             PigeonRaces = new List<PigeonRace>();
             List<Owner> owners = new List<Owner>();
 
@@ -43,8 +46,8 @@ namespace Columbus.UDP
                 {
                     case "00": GetRaceInfo(line); break; // Race information opening line.
                     case "10": owners.Add(_ownerReader.GetOwner(line)); break; // Owner entry line.
-                    case "20": continue; // Occurs, but unknown use.
-                    case "30": continue; // Occurs, but unknown use.
+                    case "20": continue; // Level entries.
+                    case "30": OwnerClockDeviation.Add(GetClockOwnerId(line), GetClockDeviation(line)); break; // Synchronization markers with the atomic clock.
                     case "40": PigeonRaces.Add(GetPigeonRace(line, owners)); break; // Pigeon entry line.
                     case "50":
                     case "60":
@@ -61,6 +64,7 @@ namespace Columbus.UDP
 
         public async Task<Race> GetRaceAsync(StreamReader stream)
         {
+            OwnerClockDeviation = new Dictionary<int, int>();
             PigeonRaces = new List<PigeonRace>();
             List<Owner> owners = new List<Owner>();
 
@@ -72,8 +76,8 @@ namespace Columbus.UDP
                 {
                     case "00": GetRaceInfo(line); break; // Race information opening line.
                     case "10": owners.Add(_ownerReader.GetOwner(line)); break; // Owner entry line.
-                    case "20": continue; // Occurs, but unknown use.
-                    case "30": continue; // Occurs, but unknown use.
+                    case "20": continue; // Level entries.
+                    case "30": OwnerClockDeviation.Add(GetClockOwnerId(line), GetClockDeviation(line)); break; // Synchronization markers with the atomic clock.
                     case "40": PigeonRaces.Add(GetPigeonRace(line, owners)); break; // Pigeon entry line.
                     case "50":
                     case "60":
@@ -155,15 +159,23 @@ namespace Columbus.UDP
             return new Coordinate(xPos, yPos);
         }
 
+        private int GetClockOwnerId(string line)
+        {
+            return Convert.ToInt32(line.Substring(7, 8));
+        }
+
+        private int GetClockDeviation(string line)
+        {
+            DateTime atomicStopTime = GetDateTimeFromRange(line, RaceStart!.Value.Year, 37);
+            DateTime clockStopTime = GetDateTimeFromRange(line, RaceStart!.Value.Year, 47);
+
+            double deviation = (atomicStopTime - clockStopTime).TotalSeconds;
+            return Convert.ToInt32(deviation);
+        }
+
         private DateTime GetPigeonArrival(string line, int year)
         {
-            int month = Convert.ToInt32(line.Substring(54, 2));
-            int day = Convert.ToInt32(line.Substring(52, 2));
-            int hour = Convert.ToInt32(line.Substring(56, 2));
-            int minute = Convert.ToInt32(line.Substring(58, 2));
-            int second = Convert.ToInt32(line.Substring(60, 2));
-
-            return new DateTime(year, month, day, hour, minute, second);
+            return GetDateTimeFromRange(line, year, 52);
         }
 
         private PigeonRace GetPigeonRace(string line, IEnumerable<Owner> owners)
@@ -176,7 +188,10 @@ namespace Columbus.UDP
 
             DateTime arrivalTime;
             if (line.Substring(48, 1) == "1")
+            {
                 arrivalTime = GetPigeonArrival(line, RaceStart!.Value.Year);
+                arrivalTime = arrivalTime.AddSeconds(OwnerClockDeviation![owner.ID]);
+            }
             else
                 arrivalTime = new DateTime();
 
@@ -209,5 +224,16 @@ namespace Columbus.UDP
         }
 
         private static string HundredsOfYearsPrefix() => (DateTime.Today.Year / 100).ToString();
+
+        private DateTime GetDateTimeFromRange(string line, int year, int startPos)
+        {
+            int month = Convert.ToInt32(line.Substring(startPos + 2, 2));
+            int day = Convert.ToInt32(line.Substring(startPos, 2));
+            int hour = Convert.ToInt32(line.Substring(startPos + 4, 2));
+            int minute = Convert.ToInt32(line.Substring(startPos + 6, 2));
+            int second = Convert.ToInt32(line.Substring(startPos + 8, 2));
+
+            return new DateTime(year, month, day, hour, minute, second);
+        }
     }
 }
