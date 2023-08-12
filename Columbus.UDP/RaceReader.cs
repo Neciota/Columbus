@@ -47,7 +47,7 @@ namespace Columbus.UDP
                     case "00": GetRaceInfo(line); break; // Race information opening line.
                     case "10": owners.Add(_ownerReader.GetOwner(line)); break; // Owner entry line.
                     case "20": continue; // Level entries.
-                    case "30": OwnerClockDeviation.Add(GetClockOwnerId(line), GetClockDeviation(line)); break; // Synchronization markers with the atomic clock.
+                    case "30": OwnerClockDeviation[GetClockOwnerId(line)] = GetClockDeviation(line); break; // Synchronization markers with the atomic clock.
                     case "40": PigeonRaces.Add(GetPigeonRace(line, owners)); break; // Pigeon entry line.
                     case "50":
                     case "60":
@@ -77,7 +77,7 @@ namespace Columbus.UDP
                     case "00": GetRaceInfo(line); break; // Race information opening line.
                     case "10": owners.Add(_ownerReader.GetOwner(line)); break; // Owner entry line.
                     case "20": continue; // Level entries.
-                    case "30": OwnerClockDeviation.Add(GetClockOwnerId(line), GetClockDeviation(line)); break; // Synchronization markers with the atomic clock.
+                    case "30": OwnerClockDeviation[GetClockOwnerId(line)] = GetClockDeviation(line); break; // Synchronization markers with the atomic clock.
                     case "40": PigeonRaces.Add(GetPigeonRace(line, owners)); break; // Pigeon entry line.
                     case "50":
                     case "60":
