@@ -2,12 +2,12 @@
 
   <PropertyGroup>
 	<PackageId>Columbus.UDP</PackageId>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <Title>Columbus UDP</Title>
 	<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Version>0.2.5</Version>
+    <Version>0.3.0</Version>
     <Authors>Neciota</Authors>
 	<Description>Logic to read .UDP files into models.</Description>
     <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -25,7 +25,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Columbus.Models" Version="0.1.5" />
     <PackageReference Include="System.IO.Packaging" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Columbus.Models\Columbus.Models.csproj" />
   </ItemGroup>
 </Project>

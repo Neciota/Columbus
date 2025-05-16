@@ -1,4 +1,4 @@
-﻿namespace Columbus.Models
+﻿namespace Columbus.Models.Race
 {
     public enum RaceType
     {

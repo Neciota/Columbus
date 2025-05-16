@@ -1,4 +1,4 @@
-﻿namespace Columbus.Models
+﻿namespace Columbus.Models.Pigeon
 {
     /// <summary>
     /// Class <c>Pigeon</c> models a racing pigeon.
@@ -8,7 +8,7 @@
         /// <summary>
         /// Create an <c>Pigeon</c> from ownership data.
         /// </summary>
-        public Pigeon(string country, int year, int ringNumber, int chip, Sex sex)
+        public Pigeon(CountryCode country, int year, RingNumber ringNumber, int chip, Sex sex)
         {
             Country = country;
             Year = year;
@@ -19,9 +19,9 @@
 
         public int Year { get; private set; }
 
-        public string Country { get; private set; }
+        public CountryCode Country { get; private set; }
 
-        public int RingNumber { get; private set; }
+        public RingNumber RingNumber { get; private set; }
 
         public int Chip { get; set; }
 
@@ -32,14 +32,14 @@
             return $"{Country}{GetTwoDigitYear()}-{RingNumber}";
         }
 
-        public string GetTwoDigitYear()
+        public int GetTwoDigitYear()
         {
-            return $"{Year - 2000}";
+            return Year % 100;
         }
 
         public override int GetHashCode()
         {
-            HashCode hash = new HashCode();
+            HashCode hash = new();
             hash.Add(Country);
             hash.Add(Year);
             hash.Add(RingNumber);
@@ -49,27 +49,7 @@
 
         public override bool Equals(object? obj)
         {
-            return (obj?.GetHashCode() ?? 0) == this.GetHashCode();
-        }
-
-        public static bool operator ==(Pigeon? a, Pigeon? b)
-        {
-            if (a is null && b is null)
-                return true;
-            else if (a is null && b is not null)
-                return false;
-
-            return a!.Equals(b);
-        }
-
-        public static bool operator !=(Pigeon? a, Pigeon? b)
-        {
-            if (a is null && b is null)
-                return true;
-            else if (a is null && b is not null)
-                return false;
-
-            return !a!.Equals(b);
+            return (obj?.GetHashCode() ?? 0) == GetHashCode();
         }
     }
 }
