@@ -3,7 +3,7 @@ using Columbus.Models.Owner;
 using Columbus.Models.Pigeon;
 using System.Globalization;
 
-namespace Columbus.UDP.Lines
+namespace Columbus.UDP.Lines.Race
 {
     internal class PigeonLine : IUdpLine
     {
@@ -66,7 +66,8 @@ namespace Columbus.UDP.Lines
             if (DateTime.TryParseExact(line.AsSpan(ArrivalStart, ArrivalLength), "ddMMHHmmss", CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out DateTime arrival))
                 Arrival = arrival;
             Chip = int.Parse(line.AsSpan(ChipStart, ChipLength), NumberStyles.HexNumber, CultureInfo.InvariantCulture);
-            SubmittedAt = DateTime.ParseExact(line.AsSpan(SubmittedAtStart, SubmittedAtLength), "ddMMHHmmss", CultureInfo.InvariantCulture);
+            if (DateTime.TryParseExact(line.AsSpan(SubmittedAtStart, SubmittedAtLength), "ddMMHHmmss", CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out DateTime submission))
+                SubmittedAt = submission;
             VaccinationDate = DateTime.ParseExact(line.AsSpan(VaccinationDateStart, VaccinationDateLength), "ddMMyy", CultureInfo.InvariantCulture);
             Hash = int.Parse(line.AsSpan(HashStart, HashLength), NumberStyles.HexNumber, CultureInfo.InvariantCulture);
         }

@@ -1,10 +1,13 @@
 ﻿using Columbus.Models;
+using Columbus.UDP.UdpFiles;
 using System.Globalization;
 
-namespace Columbus.UDP.Lines
+namespace Columbus.UDP.Lines.Race
 {
     internal class HeaderLine : IUdpLine
     {
+        private const int UdpTypeStart = 4;
+        private const int UdpTypeLength = 1;
         private const int RaceStartStart = 5;
         private const int RaceStartLength = 12;
         private const int NumberStart = 16;
@@ -25,6 +28,7 @@ namespace Columbus.UDP.Lines
         private const int HashLength = 8;
 
         public LineType Type { get; } = LineType.Header;
+        public UdpType UdpType { get; set; }
         public int Number { get; private set; }
         public DateTime RaceStart { get; private set; }
         public string Name { get; private set; } = string.Empty;
@@ -37,6 +41,7 @@ namespace Columbus.UDP.Lines
 
         public void Deserialize(string line)
         {
+            UdpType = Enum.Parse<UdpType>(line.AsSpan(UdpTypeStart, UdpTypeLength));
             Number = int.Parse(line.AsSpan(NumberStart, NumberLength));
             Name = line.Substring(NameStart, NameLength).Trim();
             Description = line.Substring(DescriptionStart, DescriptionLength).Trim();

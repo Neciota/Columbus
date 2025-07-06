@@ -2,10 +2,11 @@
 using Columbus.Models.Pigeon;
 using Columbus.Models.Race;
 using Columbus.UDP.Lines;
+using Columbus.UDP.Lines.Race;
 
-namespace Columbus.UDP
+namespace Columbus.UDP.UdpFiles
 {
-    internal class UdpFile
+    internal class RaceUdpFile : IUdpFile
     {
         public HeaderLine Header { get; private set; } = new();
         public List<OwnerLine> Owners { get; private set; } = [];
@@ -18,7 +19,7 @@ namespace Columbus.UDP
         {
             switch (udpLine)
             {
-                case HeaderLine header: 
+                case HeaderLine header:
                     Header = header;
                     break;
                 case OwnerLine owner:

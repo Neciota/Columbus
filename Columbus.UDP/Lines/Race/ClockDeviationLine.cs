@@ -2,7 +2,7 @@
 using Columbus.Models.Owner;
 using System.Globalization;
 
-namespace Columbus.UDP.Lines
+namespace Columbus.UDP.Lines.Race
 {
     internal class ClockDeviationLine : IUdpLine
     {

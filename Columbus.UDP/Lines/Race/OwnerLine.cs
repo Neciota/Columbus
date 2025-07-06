@@ -2,7 +2,7 @@
 using Columbus.Models.Owner;
 using System.Globalization;
 
-namespace Columbus.UDP.Lines
+namespace Columbus.UDP.Lines.Race
 {
     internal class OwnerLine : IUdpLine
     {
@@ -42,7 +42,8 @@ namespace Columbus.UDP.Lines
         {
             Club = ClubId.Parse(line.AsSpan(ClubStart, ClubLength), CultureInfo.InvariantCulture);
             Id = OwnerId.Parse(line.AsSpan(IdStart, IdLength), CultureInfo.InvariantCulture);
-            LoftLocation = Coordinate.ParseFromDms(line.AsSpan(LoftLocationStart, LoftLocationLength), CultureInfo.InvariantCulture);
+            if (Coordinate.TryParseFromDms(line.AsSpan(LoftLocationStart, LoftLocationLength), CultureInfo.InvariantCulture, out Coordinate loftCoordinate))
+                LoftLocation = loftCoordinate;
             Name = line.Substring(NameStart, NameLength).Trim();
             Address = new(
                 line.Substring(StreetAndHouseStart, StreetAndHouseLength).Trim(),
