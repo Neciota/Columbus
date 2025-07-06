@@ -1,6 +1,8 @@
 ﻿using Columbus.Models.Owner;
+using Columbus.Models.Pigeon;
 using Columbus.UDP.Lines;
 using Columbus.UDP.Lines.Owner;
+using System.Linq;
 
 namespace Columbus.UDP.UdpFiles
 {
@@ -34,12 +36,21 @@ namespace Columbus.UDP.UdpFiles
 
         public IEnumerable<Owner> GetOwners()
         {
-            return Owners.Select(GetOwnerFromLine).ToArray();
+            ILookup<OwnerId, Pigeon> pigeonsByOwnerId = Pigeons.Select(GetPigeonByOwnerFromLine).ToLookup(po => po.OwnerId, po => po.Pigeon);
+
+            Owner[] owners = Owners.Select(o => GetOwnerFromLine(o, pigeonsByOwnerId)).ToArray();
+
+            return owners;
         }
 
-        private static Owner GetOwnerFromLine(OwnerLine ownerLine)
+        private static Owner GetOwnerFromLine(OwnerLine ownerLine, ILookup<OwnerId, Pigeon> pigeonsByOwnerId)
         {
-            return new(ownerLine.Id, ownerLine.Name, ownerLine.LoftLocation, ownerLine.Club);
+            return new(ownerLine.Id, ownerLine.Name, ownerLine.LoftLocation, ownerLine.Club, pigeonsByOwnerId[ownerLine.Id].ToList());
+        }
+
+        private static (OwnerId OwnerId, Pigeon Pigeon) GetPigeonByOwnerFromLine(PigeonLine pigeonLine)
+        {
+            return (pigeonLine.OwnerId, new(pigeonLine.Country, pigeonLine.Year, pigeonLine.RingNumber, pigeonLine.Chip, pigeonLine.Sex));
         }
     }
 }
