@@ -10,40 +10,30 @@
         /// </summary>
         public Pigeon(CountryCode country, int year, RingNumber ringNumber, int chip, Sex sex)
         {
-            Country = country;
-            Year = year;
-            RingNumber = ringNumber;
+            Id = PigeonId.Create(country, year, ringNumber);
             Chip = chip;
             Sex = sex;
         }
 
-        public int Year { get; private set; }
+        public Pigeon(PigeonId pigeonId, int chip, Sex sex)
+        {
+            Id = pigeonId;
+            Chip = chip;
+            Sex = sex;
+        }
 
-        public CountryCode Country { get; private set; }
-
-        public RingNumber RingNumber { get; private set; }
+        public PigeonId Id { get; set; }
 
         public int Chip { get; set; }
 
         public Sex Sex { get; private set; }
 
-        public override string ToString()
-        {
-            return $"{Country}{GetTwoDigitYear()}-{RingNumber}";
-        }
-
-        public int GetTwoDigitYear()
-        {
-            return Year % 100;
-        }
+        public override string ToString() => Id.ToString();
 
         public override int GetHashCode()
         {
             HashCode hash = new();
-            hash.Add(Country);
-            hash.Add(Year);
-            hash.Add(RingNumber);
-
+            hash.Add(Id);
             return hash.ToHashCode();
         }
 

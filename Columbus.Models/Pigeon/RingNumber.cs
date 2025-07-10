@@ -75,7 +75,7 @@ namespace Columbus.Models.Pigeon
             if (TryParse(s, provider, out RingNumber result))
                 return result;
 
-            throw new FormatException($"Invalid ClubId format. Must be an integer between {MinValue} and {MaxValue}.");
+            throw new FormatException($"Invalid {nameof(RingNumber)} format. Must be an integer between {MinValue} and {MaxValue}.");
         }
 
         public static RingNumber Parse(string s, IFormatProvider? provider) => Parse(s.AsSpan(), provider);
