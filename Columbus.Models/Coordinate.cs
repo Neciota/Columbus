@@ -128,12 +128,19 @@ namespace Columbus.Models
 
         public static bool TryParseFromDms([NotNullWhen(true)] ReadOnlySpan<char> s, IFormatProvider? provider, [MaybeNullWhen(false)] out Coordinate result)
         {
+            char[] separators = [ ',', ' ', '-' ];
+
             result = default;
 
-            int separatorIndex = s.Trim().IndexOf(',');
-            if (separatorIndex < 0)
-                separatorIndex = s.Trim().IndexOf(' ');
-            if (separatorIndex < 0)
+            int separatorIndex = -1;
+            foreach (char separator in separators)
+            {
+                separatorIndex = s.Trim().IndexOf(separator);
+                if (separatorIndex > -1)
+                    break;
+            }
+
+            if  (separatorIndex == -1)
                 return false;
 
             var lattitudeSpan = s[..separatorIndex].Trim();
