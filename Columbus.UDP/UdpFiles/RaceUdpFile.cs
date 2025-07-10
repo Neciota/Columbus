@@ -68,8 +68,8 @@ namespace Columbus.UDP.UdpFiles
         {
             Owner owner = new(ownerLine.Id, ownerLine.Name, ownerLine.LoftLocation, ownerLine.Club);
             LevelEntryLine? entries = LevelEntries.Where(le => le.OwnerId == ownerLine.Id).MinBy(le => le.Level);
-            ClockDeviationLine deviationLine = ClockDeviations.First(cd => cd.OwnerId == ownerLine.Id);
-            TimeSpan clockDeviation = deviationLine.SubmissionAtomicClockTime - deviationLine.SubmissionOwnerClockTime;
+            ClockDeviationLine? deviationLine = ClockDeviations.FirstOrDefault(cd => cd.OwnerId == ownerLine.Id);
+            TimeSpan clockDeviation = deviationLine is null ? TimeSpan.Zero : deviationLine.SubmissionAtomicClockTime - deviationLine.SubmissionOwnerClockTime;
 
             return new(owner, owner.LoftCoordinate.GetDistance(Header.Location), entries?.Count ?? 0, clockDeviation);
         }
