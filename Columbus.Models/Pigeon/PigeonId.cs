@@ -11,9 +11,9 @@ namespace Columbus.Models.Pigeon
             RingNumber = ringNumber;
         }
 
-        private readonly CountryCode CountryCode { get; init; }
-        private readonly int Year { get; init; }
-        private readonly RingNumber RingNumber { get; init; }
+        public readonly CountryCode CountryCode { get; init; }
+        public readonly int Year { get; init; }
+        public readonly RingNumber RingNumber { get; init; }
 
         public static PigeonId Create(CountryCode countryCode, int year, RingNumber ringNumber)
         {
