@@ -54,7 +54,7 @@ namespace Columbus.UDP.UdpFiles
                 Header.Number,
                 RaceType.T,
                 Header.Name,
-                string.Empty,
+                Header.FileName.Substring(0, 4),
                 Header.RaceStart,
                 Header.Location,
                 ownerRaces.Values.ToList(),
