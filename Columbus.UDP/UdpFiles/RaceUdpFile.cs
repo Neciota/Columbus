@@ -74,11 +74,19 @@ namespace Columbus.UDP.UdpFiles
             return new(owner, owner.LoftCoordinate.GetDistance(Header.Location), entries?.Count ?? 0, clockDeviation);
         }
 
-        private static PigeonRace GetPigeonRaceFromPigeon(PigeonLine pigeonLine)
+        private PigeonRace GetPigeonRaceFromPigeon(PigeonLine pigeonLine)
         {
             Pigeon pigeon = new(pigeonLine.Country, pigeonLine.Year, pigeonLine.RingNumber, pigeonLine.Chip, pigeonLine.Sex);
 
-            return new(pigeon, pigeonLine.OwnerId, pigeonLine.Arrival, pigeonLine.Mark);
+            // Because the UDP does not store the year for each individual serialized date/time, the serializer reads them into current year automatically.
+            // We assume the actual year is always the race's year and correct accordingly.
+            DateTime? arrival;
+            if (pigeonLine.Arrival is not null)
+                arrival = pigeonLine.Arrival.Value.AddYears(Header.RaceStart.Year - pigeonLine.Arrival.Value.Year);
+            else
+                arrival = pigeonLine.Arrival;
+
+            return new(pigeon, pigeonLine.OwnerId, arrival, pigeonLine.Mark);
         }
 
         public IEnumerable<Owner> GetOwners()
