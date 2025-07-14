@@ -128,23 +128,14 @@ namespace Columbus.Models
 
         public static bool TryParseFromDms([NotNullWhen(true)] ReadOnlySpan<char> s, IFormatProvider? provider, [MaybeNullWhen(false)] out Coordinate result)
         {
-            char[] separators = [ ',', ' ', '-' ];
-
             result = default;
 
-            int separatorIndex = -1;
-            foreach (char separator in separators)
-            {
-                separatorIndex = s.Trim().IndexOf(separator);
-                if (separatorIndex > -1)
-                    break;
-            }
-
-            if  (separatorIndex == -1)
+            if (s.Length != 20)
                 return false;
 
-            var lattitudeSpan = s[..separatorIndex].Trim();
-            var longitudeSpan = s[(separatorIndex + 1)..].Trim();
+            const int componentLength = 10;
+            var lattitudeSpan = s.Slice(0, componentLength);
+            var longitudeSpan = s.Slice(10, componentLength);
 
             if (TryParseDmsToComponent(lattitudeSpan, provider, out var lattitude) &&
                 TryParseDmsToComponent(longitudeSpan, provider, out var longitude))
@@ -160,11 +151,13 @@ namespace Columbus.Models
         {
             component = default;
 
-            if (double.TryParse(s[..3], provider, out double degrees) &&
+            if (double.TryParse(s.Slice(1, 2), provider, out double degrees) &&
                 double.TryParse(s.Slice(3, 2), provider, out double minutes) &&
                 double.TryParse(s[5..], provider, out double seconds))
             {
-                component = degrees + minutes / 60 + seconds / 3600;
+                int multiplier = s[0] == '-' ? -1 : 1;
+
+                component = multiplier * (degrees + minutes / 60 + seconds / 3600);
                 return true;
             }
 
