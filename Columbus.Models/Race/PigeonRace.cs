@@ -20,7 +20,7 @@
 
         public int Mark { get; set; } = mark;
 
-        public int? Points { get; set; }
+        public double? Points { get; set; }
 
         public int? Position { get; set; }
 

@@ -52,16 +52,13 @@ namespace Columbus.UDP.UdpFiles
 
             return new Race(
                 Header.Number,
-                RaceType.T,
+                RaceType.Parse(Header.FileName.AsSpan(1, 1)),
                 Header.Name,
                 Header.FileName.Substring(0, 4),
                 Header.RaceStart,
                 Header.Location,
                 ownerRaces.Values.ToList(),
-                pigeonRaces,
-                3,
-                500,
-                30);
+                pigeonRaces);
         }
 
         private OwnerRace GetOwnerRaceFromOwner(OwnerLine ownerLine)
