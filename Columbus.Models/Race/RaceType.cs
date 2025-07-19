@@ -26,6 +26,11 @@ namespace Columbus.Models.Race
             return raceType;
         }
 
+        public override string ToString()
+        {
+            return Value.ToString();
+        }
+
         public override bool Equals(object? obj)
         {
             return obj is RaceType raceType && Equals(raceType);
