@@ -15,7 +15,8 @@
             IList<PigeonRace> pigeonRaces,
             int pointsQuotient,
             int maxPoints,
-            int minPoints)
+            int minPoints,
+            int pointsPrecision)
         {
             Number = number;
             Type = type;
@@ -26,7 +27,7 @@
             OwnerRaces = ownerRaces;
             PigeonRaces = pigeonRaces;
 
-            RankPigeons(pointsQuotient, maxPoints, minPoints);
+            RankPigeons(pointsQuotient, maxPoints, minPoints, pointsPrecision);
         }
 
         public Race(
@@ -71,7 +72,8 @@
         /// <param name="pointsQuotient">The quotient for how many pigeons will store points, e.g. '3' will mean 1 in 3 pigeons scores points.</param>
         /// <param name="maxPoints">Amount of points for the first ranked pigeon.</param>
         /// <param name="minPoints">Amount of points for the last pigeon still scoring points according to <see href="pointsQuotient"/>.</param>
-        public void RankPigeons(int pointsQuotient, double maxPoints, double minPoints)
+        /// <param name="pointsPrecision">Amount of digits to round to in points.</param>
+        public void RankPigeons(int pointsQuotient, double maxPoints, double minPoints, int pointsPrecision)
         {
             double prizeCount = Math.Ceiling(Convert.ToDouble(PigeonRaces.Count) / pointsQuotient);
             double pointStep = (maxPoints - minPoints) / Math.Max(prizeCount - 1, 1);
@@ -81,7 +83,10 @@
             int position = 0;
             foreach (PigeonRace pigeonRace in PigeonRaces)
             {
-                pigeonRace.Points = maxPoints - pointStep * position;
+                if (position >= prizeCount)
+                    pigeonRace.Points = 0;
+                else
+                    pigeonRace.Points = Math.Round(maxPoints - pointStep * position, pointsPrecision);
                 pigeonRace.Position = ++position;
 
                 PigeonRace? previousPigeonForOwner = lastPigeonByOwner.GetValueOrDefault(pigeonRace.OwnerId);
