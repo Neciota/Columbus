@@ -42,12 +42,12 @@ namespace Columbus.UDP.UdpFiles
             }
         }
 
-        public Race GetRace()
+        public Race GetRace(INeutralizationTime neutralizationTime)
         {
             Dictionary<OwnerId, OwnerRace> ownerRaces = Owners.Select(GetOwnerRaceFromOwner)
                 .ToDictionary(or => or.Owner.Id);
             List<PigeonRace> pigeonRaces = Pigeons.Select(GetPigeonRaceFromPigeon)
-                .OrderByDescending(pr => pr.GetSpeed(ownerRaces[pr.OwnerId].Distance, Header.RaceStart, ownerRaces[pr.OwnerId].ClockDeviation))
+                .OrderByDescending(pr => pr.GetSpeed(ownerRaces[pr.OwnerId].Distance, Header.RaceStart, ownerRaces[pr.OwnerId].ClockDeviation, neutralizationTime))
                 .ToList();
 
             return new Race(

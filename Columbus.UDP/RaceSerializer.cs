@@ -9,11 +9,11 @@ namespace Columbus.UDP
     public class RaceSerializer : BaseSerializer, IRaceSerializer
     {
 
-        public async Task<Race> DeserializeAsync(StreamReader stream)
+        public async Task<Race> DeserializeAsync(StreamReader stream, INeutralizationTime neutralizationTime)
         {
             RaceUdpFile udpFile = await GetUdpAsync<RaceUdpFile>(stream, UdpType.Race);
 
-            return udpFile.GetRace();
+            return udpFile.GetRace(neutralizationTime);
         }
 
         public Task<byte[]> SerializeAsync(Race race)

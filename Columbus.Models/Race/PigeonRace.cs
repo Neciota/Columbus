@@ -33,17 +33,15 @@
         /// <param name="startTime">Date/time the race started.</param>
         /// <param name="deviation">Owner's clock deviation from the atomic clock.</param>
         /// <returns>Speed of the pigeon adjusted for deviation.</returns>
-        public Speed GetSpeed(double distance, DateTime startTime, TimeSpan deviation)
+        public Speed GetSpeed(double distance, DateTime startTime, TimeSpan deviation, INeutralizationTime neutralisationTime)
         {
-            if (ArrivalTime is not null)
-            {
-                TimeSpan time = ArrivalTime.Value + deviation - startTime;
-                return new(distance / time.TotalSeconds);
-            }
-            else
-            {
+            if (!ArrivalTime.HasValue)
                 return Speed.Zero;
-            }
+
+            TimeSpan time = neutralisationTime.GetNeutralizedTime(ArrivalTime.Value, startTime) + deviation;
+            return new(distance / time.TotalSeconds);
         }
+
+        public bool IsInNeutralized(INeutralizationTime neutralizationTime) => ArrivalTime.HasValue && neutralizationTime.IsInNeutralized(ArrivalTime.Value);
     }
 }
