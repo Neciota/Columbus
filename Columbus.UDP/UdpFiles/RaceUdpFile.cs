@@ -48,6 +48,7 @@ namespace Columbus.UDP.UdpFiles
                 .ToDictionary(or => or.Owner.Id);
             List<PigeonRace> pigeonRaces = Pigeons.Select(GetPigeonRaceFromPigeon)
                 .OrderByDescending(pr => pr.GetSpeed(ownerRaces[pr.OwnerId].Distance, Header.RaceStart, ownerRaces[pr.OwnerId].ClockDeviation, neutralizationTime))
+                .ThenBy(pr => pr.ArrivalOrder)
                 .ToList();
 
             return new Race(
@@ -83,7 +84,7 @@ namespace Columbus.UDP.UdpFiles
             else
                 arrival = pigeonLine.Arrival;
 
-            return new(pigeon, pigeonLine.OwnerId, arrival, pigeonLine.Mark);
+            return new(pigeon, pigeonLine.OwnerId, arrival, pigeonLine.Mark, pigeonLine.ArrivalOrder);
         }
 
         public IEnumerable<Owner> GetOwners()

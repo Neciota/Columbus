@@ -3,9 +3,9 @@
     using Columbus.Models.Owner;
     using Columbus.Models.Pigeon;
 
-    public class PigeonRace(Pigeon pigeon, OwnerId ownerId, DateTime? arrivalTime, int mark)
+    public class PigeonRace(Pigeon pigeon, OwnerId ownerId, DateTime? arrivalTime, int mark, int arrivalOrder)
     {
-        public PigeonRace(Pigeon pigeon, OwnerId ownerId, DateTime? arrivalTime, int mark, int? points, int? position, int? next) : this(pigeon, ownerId, arrivalTime, mark)
+        public PigeonRace(Pigeon pigeon, OwnerId ownerId, DateTime? arrivalTime, int mark, int arrivalOrder, int? points, int? position, int? next) : this(pigeon, ownerId, arrivalTime, mark, arrivalOrder)
         {
             Points = points;
             Position = position;
@@ -19,6 +19,8 @@
         public DateTime? ArrivalTime { get; set; } = arrivalTime;
 
         public int Mark { get; set; } = mark;
+
+        public int ArrivalOrder { get; set; } = arrivalOrder;
 
         public double? Points { get; set; }
 
