@@ -26,6 +26,8 @@ namespace Columbus.Models.Owner
             return ownerId;
         }
 
+        public bool HasClubId(ClubId clubId) => (Value / 10_000) == clubId.Value;
+
         public override string ToString() => Value.ToString();
 
         public int CompareTo(OwnerId other)
