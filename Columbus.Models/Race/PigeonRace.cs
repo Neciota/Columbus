@@ -32,8 +32,10 @@
         {
             if (!ArrivalTime.HasValue)
                 return null;
+            if (!submissionTime.HasValue || !stopTime.HasValue)
+                return ArrivalTime;
 
-            TimeSpan submissionToArrival = ArrivalTime.Value - submissionTime ?? TimeSpan.Zero;
+            TimeSpan submissionToArrival = ArrivalTime - submissionTime ?? TimeSpan.Zero;
             TimeSpan submissionToStop = stopTime - submissionTime ?? TimeSpan.Zero;
             double deviationFactor = deviation.Divide(submissionToStop);
             TimeSpan arrivalDeviation = submissionToArrival * deviationFactor;

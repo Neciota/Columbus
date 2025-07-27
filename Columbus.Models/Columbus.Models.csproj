@@ -7,7 +7,7 @@
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Title>Columbus Models</Title>
-    <Version>0.2.9</Version>
+    <Version>0.2.10</Version>
     <Authors>Neciota</Authors>
     <Description>Models to work with pigeon racing results.</Description>
     <RepositoryUrl>https://github.com/TWC-Rik/Columbus/tree/main/Columbus.Models</RepositoryUrl>

@@ -29,4 +29,25 @@ public class PigeonRaceTests
         Assert.AreEqual(expected.Minute, actual.Value.Minute);
         Assert.AreEqual(expected.Second, actual.Value.Second);
     }
+
+    [TestMethod()]
+    public void GetCorrectedArrivalTimeWhenNoCorrectionTest()
+    {
+        DateTime rawArrivalTime = new(2014, 07, 27, 23, 56, 47, DateTimeKind.Local);
+
+        DateTime expected = new(2014, 07, 27, 23, 56, 47, DateTimeKind.Local);
+
+        Pigeon.Pigeon pigeon = new(CountryCode.Create("NL"), 14, RingNumber.Create(1234567), 0, Sex.Male);
+        PigeonRace pigeonRace = new(pigeon, OwnerId.Create(12345678), rawArrivalTime, 1, 1);
+
+        DateTime? actual = pigeonRace.GetCorrectedArrivalTime(null, null, TimeSpan.Zero);
+
+        Assert.IsNotNull(actual);
+        Assert.AreEqual(expected.Year, actual.Value.Year);
+        Assert.AreEqual(expected.Month, actual.Value.Month);
+        Assert.AreEqual(expected.Day, actual.Value.Day);
+        Assert.AreEqual(expected.Hour, actual.Value.Hour);
+        Assert.AreEqual(expected.Minute, actual.Value.Minute);
+        Assert.AreEqual(expected.Second, actual.Value.Second);
+    }
 }
