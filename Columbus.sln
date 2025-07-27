@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Columbus.UDP", "Columbus.UD
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Columbus.Models", "Columbus.Models\Columbus.Models.csproj", "{963B4917-2BE7-444E-9E8F-1E06B235E82E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Columbus.Models.Tests", "Columbus.ModelsTests\Columbus.Models.Tests.csproj", "{3A985220-C56F-42DA-A7F7-CCB759591AC6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{963B4917-2BE7-444E-9E8F-1E06B235E82E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{963B4917-2BE7-444E-9E8F-1E06B235E82E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{963B4917-2BE7-444E-9E8F-1E06B235E82E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A985220-C56F-42DA-A7F7-CCB759591AC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A985220-C56F-42DA-A7F7-CCB759591AC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A985220-C56F-42DA-A7F7-CCB759591AC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A985220-C56F-42DA-A7F7-CCB759591AC6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -28,6 +28,19 @@
 
         public int? Next { get; set; }
 
+        public DateTime? GetCorrectedArrivalTime(DateTime? submissionTime, DateTime? stopTime, TimeSpan deviation)
+        {
+            if (!ArrivalTime.HasValue)
+                return null;
+
+            TimeSpan submissionToArrival = ArrivalTime.Value - submissionTime ?? TimeSpan.Zero;
+            TimeSpan submissionToStop = stopTime - submissionTime ?? TimeSpan.Zero;
+            double deviationFactor = deviation.Divide(submissionToStop);
+            TimeSpan arrivalDeviation = submissionToArrival * deviationFactor;
+
+            return ArrivalTime + arrivalDeviation;
+        }
+
         /// <summary>
         /// Gets the speed of a pigeon in the race.
         /// </summary>
@@ -35,12 +48,13 @@
         /// <param name="startTime">Date/time the race started.</param>
         /// <param name="deviation">Owner's clock deviation from the atomic clock.</param>
         /// <returns>Speed of the pigeon adjusted for deviation.</returns>
-        public Speed GetSpeed(double distance, DateTime startTime, TimeSpan deviation, INeutralizationTime neutralisationTime)
+        public Speed GetSpeed(double distance, DateTime startTime, DateTime? submissionTime, DateTime? stopTime, TimeSpan deviation, INeutralizationTime neutralisationTime)
         {
-            if (!ArrivalTime.HasValue)
+            DateTime? correctedArrivalTime = GetCorrectedArrivalTime(submissionTime, stopTime, deviation);
+            if (!correctedArrivalTime.HasValue)
                 return Speed.Zero;
 
-            TimeSpan time = neutralisationTime.GetNeutralizedTime(ArrivalTime.Value, startTime) + deviation;
+            TimeSpan time = neutralisationTime.GetNeutralizedTime(correctedArrivalTime.Value, startTime);
             return new(distance / time.TotalSeconds);
         }
 

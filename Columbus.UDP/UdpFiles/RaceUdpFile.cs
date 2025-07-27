@@ -47,7 +47,7 @@ namespace Columbus.UDP.UdpFiles
             Dictionary<OwnerId, OwnerRace> ownerRaces = Owners.Select(GetOwnerRaceFromOwner)
                 .ToDictionary(or => or.Owner.Id);
             List<PigeonRace> pigeonRaces = Pigeons.Select(GetPigeonRaceFromPigeon)
-                .OrderByDescending(pr => pr.GetSpeed(ownerRaces[pr.OwnerId].Distance, Header.RaceStart, ownerRaces[pr.OwnerId].ClockDeviation, neutralizationTime))
+                .OrderByDescending(pr => pr.GetSpeed(ownerRaces[pr.OwnerId].Distance, Header.RaceStart, ownerRaces[pr.OwnerId].SubmissionAt, ownerRaces[pr.OwnerId].StoppedAt, ownerRaces[pr.OwnerId].ClockDeviation, neutralizationTime))
                 .ThenBy(pr => pr.ArrivalOrder)
                 .ToList();
 
@@ -67,9 +67,25 @@ namespace Columbus.UDP.UdpFiles
             Owner owner = new(ownerLine.Id, ownerLine.Name, ownerLine.LoftLocation, ownerLine.Club);
             LevelEntryLine? entries = LevelEntries.Where(le => le.OwnerId == ownerLine.Id).MinBy(le => le.Level);
             ClockDeviationLine? deviationLine = ClockDeviations.FirstOrDefault(cd => cd.OwnerId == ownerLine.Id);
-            TimeSpan clockDeviation = deviationLine is null ? TimeSpan.Zero : deviationLine.SubmissionAtomicClockTime - deviationLine.SubmissionOwnerClockTime;
+            TimeSpan clockDeviation = deviationLine is null ? TimeSpan.Zero : deviationLine.StopAtomicClockTime - deviationLine.StopOwnerClockTime;
+            DateTime? submissionAt = deviationLine is null ? null : new DateTime(
+                Header.RaceStart.Year,
+                deviationLine.SubmissionOwnerClockTime.Month,
+                deviationLine.SubmissionOwnerClockTime.Day,
+                deviationLine.SubmissionOwnerClockTime.Hour,
+                deviationLine.SubmissionOwnerClockTime.Minute,
+                deviationLine.SubmissionOwnerClockTime.Second,
+                DateTimeKind.Local);
+            DateTime? stoppedAt = deviationLine is null ? null : new DateTime(
+                Header.RaceStart.Year,
+                deviationLine.StopOwnerClockTime.Month,
+                deviationLine.StopOwnerClockTime.Day,
+                deviationLine.StopOwnerClockTime.Hour,
+                deviationLine.StopOwnerClockTime.Minute,
+                deviationLine.StopOwnerClockTime.Second,
+                DateTimeKind.Local);
 
-            return new(owner, owner.LoftCoordinate.GetDistance(Header.Location), entries?.Count ?? 0, clockDeviation);
+            return new(owner, owner.LoftCoordinate.GetDistance(Header.Location), entries?.Count ?? 0, submissionAt, stoppedAt, clockDeviation);
         }
 
         private PigeonRace GetPigeonRaceFromPigeon(PigeonLine pigeonLine)

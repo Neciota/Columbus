@@ -10,22 +10,26 @@
         /// <summary>
         /// Create an <c>OwnerRace</c> from Owner and race location.
         /// </summary>
-        public OwnerRace(Owner owner, Coordinate startLocation, int count, TimeSpan clockDeviation)
+        public OwnerRace(Owner owner, Coordinate startLocation, int count, DateTime? submissionAt, DateTime? stoppedAt, TimeSpan clockDeviation)
         {
             Owner = owner;
             Distance = CalculateDistance(startLocation);
             Count = count;
+            SubmissionAt = submissionAt;
+            StoppedAt = stoppedAt;
             ClockDeviation = clockDeviation;
         }
 
         /// <summary>
         /// Create an <c>OwnerRace</c> from Owner and properties.
         /// </summary>
-        public OwnerRace(Owner owner, double distance, int count, TimeSpan clockDeviation)
+        public OwnerRace(Owner owner, double distance, int count, DateTime? submissionAt, DateTime? stoppedAt, TimeSpan clockDeviation)
         {
             Owner = owner;
             Distance = distance;
             Count = count;
+            SubmissionAt = submissionAt;
+            StoppedAt = stoppedAt;
             ClockDeviation = clockDeviation;
         }
 
@@ -50,6 +54,16 @@
         /// Negative means the owner clock jumped ahead (owner clock lies ahead of the atomic time).
         /// </summary>
         public TimeSpan ClockDeviation { get; private set; }
+
+        /// <summary>
+        /// When the clock was first synchronized with the atomic clock.
+        /// </summary>
+        public DateTime? SubmissionAt { get; private set; }
+
+        /// <summary>
+        /// when the clock was finally synchronized with the atomic clock.
+        /// </summary>
+        public DateTime? StoppedAt { get; private set; }
 
         /// <summary>
         /// NPO-provided way of calculating race start-loft distance (arc length).
