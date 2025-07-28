@@ -34,8 +34,8 @@ namespace Columbus.UDP.Lines.Race
         public Coordinate LoftLocation { get; private set; }
         public string Name { get; private set; } = string.Empty;
         public Address Address { get; private set; }
-        public string TelephoneNumber { get; private set; } = string.Empty;
-        public string Email { get; private set; } = string.Empty;
+        public string? TelephoneNumber { get; private set; }
+        public string? Email { get; private set; }
         public int Hash { get; private set; }
 
         public void Deserialize(string line)
@@ -51,8 +51,10 @@ namespace Columbus.UDP.Lines.Race
                 line.Substring(CountryStart, CountryLength).Trim(),
                 line.Substring(TownStart, TownLength).Trim()
             );
-            TelephoneNumber = line.Substring(TelephoneNumberStart, TelephoneNumberLength).Trim();
-            Email = line.Substring(EmailStart, EmailLength).Trim();
+            if (line.Length > TelephoneNumberStart + TelephoneNumberLength)
+                TelephoneNumber = line.Substring(TelephoneNumberStart, TelephoneNumberLength).Trim();
+            if (line.Length > EmailStart + EmailLength)
+                Email = line.Substring(EmailStart, EmailLength).Trim();
             Hash = int.Parse(line.AsSpan(line.Length - HashLength, HashLength), NumberStyles.HexNumber, CultureInfo.InvariantCulture);
         }
 

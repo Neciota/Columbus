@@ -68,7 +68,8 @@ namespace Columbus.UDP.Lines.Race
             Chip = int.Parse(line.AsSpan(ChipStart, ChipLength), NumberStyles.HexNumber, CultureInfo.InvariantCulture);
             if (DateTime.TryParseExact(line.AsSpan(SubmittedAtStart, SubmittedAtLength), "ddMMHHmmss", CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out DateTime submission))
                 SubmittedAt = submission;
-            VaccinationDate = DateTime.ParseExact(line.AsSpan(VaccinationDateStart, VaccinationDateLength), "ddMMyy", CultureInfo.InvariantCulture);
+            if (DateTime.TryParseExact(line.AsSpan(VaccinationDateStart, VaccinationDateLength), "ddMMyy", CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out DateTime vaccinationDate))
+                VaccinationDate = vaccinationDate;
             Hash = int.Parse(line.AsSpan(HashStart, HashLength), NumberStyles.HexNumber, CultureInfo.InvariantCulture);
         }
 
