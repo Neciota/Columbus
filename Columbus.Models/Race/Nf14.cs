@@ -28,11 +28,11 @@
 
             if (GetSunUp(rawArrivalTime).Add(-_gracePeriod) > rawArrivalTime)
             {
-                return TimeSpan.FromTicks((rawArrivalTime - startTime).Ticks * (GetSunDown(rawArrivalTime.AddDays(-1)) - startTime).Ticks / (GetSunUp(rawArrivalTime) - startTime).Ticks);
+                return (rawArrivalTime - startTime) * ((GetSunDown(rawArrivalTime.AddDays(-1)) - startTime) / (GetSunUp(rawArrivalTime) - startTime));
             }
             else if (GetSunDown(rawArrivalTime).Add(_gracePeriod) < rawArrivalTime)
             {
-                return TimeSpan.FromTicks((rawArrivalTime - startTime).Ticks * (GetSunDown(rawArrivalTime) - startTime).Ticks / (GetSunUp(rawArrivalTime.AddDays(1)) - startTime).Ticks);
+                return (rawArrivalTime - startTime) * ((GetSunDown(rawArrivalTime) - startTime) / (GetSunUp(rawArrivalTime.AddDays(1)) - startTime));
             }
             else
             {
